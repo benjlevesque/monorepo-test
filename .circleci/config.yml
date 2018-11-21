@@ -21,7 +21,10 @@ jobs:
             # Create empty file
             echo "" > projects
 
-            # Check if any package CI file has been modified
+            ##
+            echo "Check if any package CI file has been modified"
+            ##
+
             git --no-pager diff --no-commit-id --name-only -r `git log -n 2 --oneline --pretty=format:"%h" | tail -n1` | grep '.circleci' | sort -u >  circle_files
             while read file; do
               base=$(basename $file)
@@ -31,7 +34,9 @@ jobs:
               fi
             done<circle_files
             
-            # Check which packages has been modified
+            ##
+            echo "Check which packages has been modified"
+            ##
             git --no-pager diff --no-commit-id --name-only -r `git log -n 2 --oneline --pretty=format:"%h" | tail -n1` | grep 'packages' | cut -d/ -f2 | sort -u >  packages_files
             while read file; do
               if grep -Fxq $file package_list; then
