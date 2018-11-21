@@ -12,4 +12,4 @@ jobs:
       - checkout
       - run:
           name: Determine which directories have changed
-          command: |
+          command: bash .circleci/check_changes.sh
