@@ -1,9 +1,44 @@
-version: 2.1
+version: 2
 
 orbs:
   hello: circleci/hello-build@0.0.7
 
-workflows:
-  "Hello Workflow":
-    jobs:
-      - hello/hello-build
+jobs:
+  build:
+    docker:
+      - image: circleci/golang
+    working_directory: ~/project
+    environment:
+      O: benjlevesque
+      R: monorepo-test
+    steps:
+      - checkout
+      - run:
+          name: Determine which directories have changed
+          command: |
+            git diff --no-commit-id --name-only -r `git log -n 2 --oneline --pretty=format:"%h" | tail -n1` | cut -d/ -f1 | sort -u >  projects
+            printf "Modified directories:\n"
+            cat projects
+            find ./packages/*/package.json -maxdepth 2 -type f | xargs -l1 dirname | xargs -l1 basename > package_list
+            printf "Available packages:\n"
+            cat package_list
+            while read project; do
+              if grep -Fxq $project package_list; then
+                printf "\nTriggerring build for dir:"$project 
+                # curl -s -u ${CIRCLE_TOKEN}: -d build_parameters[CIRCLE_JOB]=${project} https://circleci.com/api/v1.1/project/github/$O/$R/tree/$CIRCLE_BRANCH
+              fi
+            done <projects
+  package1:
+    docker:
+      - image: "circleci/node:9.6.1"
+    working_directory: ~/project/packages/package1
+    steps:
+      - checkout
+      - run: node index.js
+  package2:
+    docker:
+      - image: "circleci/node:9.6.1"
+    working_directory: ~/project/packages/package2
+    steps:
+      - checkout
+      - run: node index.js
