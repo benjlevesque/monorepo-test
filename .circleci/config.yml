@@ -41,13 +41,19 @@ jobs:
 
             # Remove duplicates
             echo "$(sort -u projects)" > projects
+
+            echo "Project to build:"
+            cat projects
             
             # Run builds
             while read project; do
+              if [ -z $project ] ; then
+                continue
+              fi
               printf "== %s == \n" $project
               if [ -f .circleci/$project.yml ]; then
                 printf "Triggerring build for %s \n" $project 
-                #curl -s -u ${CIRCLE_TOKEN}: --request POST --form "config=@.circleci/$project.yml" https://circleci.com/api/v1.1/project/github/$O/$R/tree/$CIRCLE_BRANCH
+                curl -s -u ${CIRCLE_TOKEN}: --request POST --form "config=@.circleci/$project.yml" https://circleci.com/api/v1.1/project/github/$O/$R/tree/$CIRCLE_BRANCH
                 # TODO can be improved with https://circleci.com/docs/api/v1-reference/#new-project-build when build_parameters are available (not yet as of 21/11/2018)
               else
                 printf "No build for %s \n"$project 
