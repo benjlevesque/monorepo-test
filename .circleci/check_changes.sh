@@ -52,7 +52,7 @@ while read project; do
     curl -s -u ${CIRCLE_TOKEN}: --request POST --form "config=@.circleci/$project.yml" https://circleci.com/api/v1.1/project/github/$O/$R/tree/$CIRCLE_BRANCH
     # TODO can be improved with https://circleci.com/docs/api/v1-reference/#new-project-build when build_parameters are available (not yet as of 21/11/2018)
     else
-    printf "No build for %s \n"$project 
+    printf "No build for %s \n" $project 
     fi
     printf "\n"
 done <projects
