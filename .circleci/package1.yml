@@ -1,7 +1,7 @@
 version: 2
 
 jobs:
-  build-p1:
+  build:
     docker:
       - image: "circleci/node:9.6.1"
     working_directory: ~/repo/packages/package1
@@ -12,6 +12,6 @@ jobs:
 
 workflows:
   version: 2
-  build:
+  build-p1:
     jobs:
-      - build-p1
+      - build
