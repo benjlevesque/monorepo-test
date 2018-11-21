@@ -10,7 +10,7 @@ jobs:
           path: ~/repo
       - run: node index.js
 
-workflow:
+workflows:
   version: 2.1
   build:
     jobs:
