@@ -1,7 +1,4 @@
-version: 2.1
-
-orbs:
-  hello: circleci/hello-build@0.0.7
+version: 2
 
 jobs:
   build:
@@ -25,7 +22,7 @@ jobs:
             while read project; do
               if grep -Fxq $project package_list; then
                 printf "\nTriggerring build for dir:"$project 
-                curl -s -u ${CIRCLE_TOKEN}: --request POST --form config=@${project}.yml https://circleci.com/api/v1.1/project/github/$O/$R/tree/$CIRCLE_BRANCH
+                curl -s -u ${CIRCLE_TOKEN}: --request POST --form "config=@.circleci/$project.yml" https://circleci.com/api/v1.1/project/github/$O/$R/tree/$CIRCLE_BRANCH
                 # TODO can be improved with https://circleci.com/docs/api/v1-reference/#new-project-build when build_parameters are available (not yet as of 21/11/2018)
               fi
             done <projects

@@ -1,0 +1,11 @@
+version: 2
+
+jobs:
+  build:
+    docker:
+      - image: "circleci/node:9.6.1"
+    working_directory: ~/repo/packages/package1
+    steps:
+      - checkout:
+          path: ~/repo
+      - run: node index.js
