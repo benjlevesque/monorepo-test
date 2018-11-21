@@ -7,7 +7,7 @@ jobs:
   build:
     docker:
       - image: circleci/golang
-    working_directory: ~/project
+    working_directory: ~/repo
     environment:
       O: benjlevesque
       R: monorepo-test
@@ -31,16 +31,16 @@ jobs:
   package1:
     docker:
       - image: "circleci/node:9.6.1"
-    working_directory: ~/project
+    working_directory: ~/repo/packages/package1
     steps:
-      - checkout
-      - run: cd packages/package1
+      - checkout:
+          path: ~/repo
       - run: node index.js
   package2:
     docker:
       - image: "circleci/node:9.6.1"
-    working_directory: ~/project
+    working_directory: ~/repo/packages/package2
     steps:
-      - checkout
-      - run: cd packages/package2
+      - checkout:
+          path: ~/repo
       - run: node index.js
