@@ -31,14 +31,16 @@ jobs:
   package1:
     docker:
       - image: "circleci/node:9.6.1"
-    working_directory: ~/project/packages/package1
+    working_directory: ~/project
     steps:
       - checkout
+      - run: cd packages/package1
       - run: node index.js
   package2:
     docker:
       - image: "circleci/node:9.6.1"
-    working_directory: ~/project/packages/package2
+    working_directory: ~/project
     steps:
       - checkout
+      - run: cd packages/package2
       - run: node index.js
