@@ -25,23 +25,7 @@ jobs:
             while read project; do
               if grep -Fxq $project package_list; then
                 printf "\nTriggerring build for dir:"$project 
-                curl -s -u ${CIRCLE_TOKEN}: -d build_parameters[CIRCLE_JOB]=${project} https://circleci.com/api/v1.1/project/github/$O/$R/tree/$CIRCLE_BRANCH
+                curl -s -u ${CIRCLE_TOKEN}: --request POST --form config=@${project}.yml https://circleci.com/api/v1.1/project/github/$O/$R/tree/$CIRCLE_BRANCH
                 # TODO can be improved with https://circleci.com/docs/api/v1-reference/#new-project-build when build_parameters are available (not yet as of 21/11/2018)
               fi
             done <projects
-  package1:
-    docker:
-      - image: "circleci/node:9.6.1"
-    working_directory: ~/repo/packages/package1
-    steps:
-      - checkout:
-          path: ~/repo
-      - run: node index.js
-  package2:
-    docker:
-      - image: "circleci/node:9.6.1"
-    working_directory: ~/repo/packages/package2
-    steps:
-      - checkout:
-          path: ~/repo
-      - run: node index.js
