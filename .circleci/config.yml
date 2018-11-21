@@ -19,7 +19,7 @@ jobs:
             cat package_list
             
             # Create empty file
-            touch projects
+            echo "" > projects
 
             # Check if any package CI file has been modified
             git --no-pager diff --no-commit-id --name-only -r `git log -n 2 --oneline --pretty=format:"%h" | tail -n1` | grep '.circleci' | sort -u >  circle_files
