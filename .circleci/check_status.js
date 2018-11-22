@@ -20,13 +20,6 @@ const {
   CIRCLE_TOKEN
 } = process.env;
 
-console.log({
-  CIRCLE_PROJECT_REPONAME,
-  CIRCLE_PROJECT_USERNAME,
-  CIRCLE_BRANCH,
-  CIRCLE_TOKEN
-});
-
 const circle_ci_api_base = "https://circleci.com/api/v1.1/project/github";
 const circleApiUrl = (path, appendToken = true) =>
   `${circle_ci_api_base}/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/${path}${
@@ -104,7 +97,8 @@ const checkBuilds = async builds => {
     );
     const queue_length = queue.length;
     finished = queue_length == 0;
-    console.log({ queue_length, statuses });
+    // console.log({ queue_length, statuses });
+    console.log(`${queue_length} builds left...`);
   }
 
   let exitCode = 0;
