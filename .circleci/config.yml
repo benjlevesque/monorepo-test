@@ -3,16 +3,16 @@ version: 2
 jobs:
   detect-changes:
     docker:
-      - image: circleci/golang
+      - image: circleci/node:9.6.1
     working_directory: ~/repo
-    environment:
-      O: benjlevesque
-      R: monorepo-test
     steps:
       - checkout
       - run:
-          name: Determine which directories have changed
-          command: bash .circleci/check_changes.sh
+          name: Determine which packages have changed
+          command: |
+            yarn 
+            yarn bootstrap
+            yarn start:ci
 
 workflows:
   version: 2

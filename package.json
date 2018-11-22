@@ -6,9 +6,12 @@
   "author": "Benjamin LEVESQUE <14175665+benjlevesque@users.noreply.github.com>",
   "license": "MIT",
   "devDependencies": {
-    "lerna": "^3.4.3"
+    "base-64": "^0.1.0",
+    "lerna": "^3.4.3",
+    "node-fetch": "^2.3.0"
   },
   "scripts": {
-    "bootstrap": "lerna bootstrap"
+    "bootstrap": "lerna bootstrap",
+    "start:ci": "node .circleci/check_status.js"
   }
 }
