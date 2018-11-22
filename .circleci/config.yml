@@ -1,7 +1,7 @@
 version: 2
 
 jobs:
-  build:
+  detect-changes:
     docker:
       - image: circleci/golang
     working_directory: ~/repo
@@ -13,3 +13,10 @@ jobs:
       - run:
           name: Determine which directories have changed
           command: bash .circleci/check_changes.sh
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - detect-changes
+      

@@ -8,20 +8,6 @@ cat package_list
 # Create empty file
 echo "" > projects
 
-##
-echo "Check if any package CI file has been modified"
-##
-
-git --no-pager diff --no-commit-id --name-only -r `git log -n 2 --oneline --pretty=format:"%h" | tail -n1` | grep '.circleci' | sort -u >  circle_files
-while read file; do
-    base=$(basename $file)
-    file_name="${base%.*}"
-    if grep -Fxq $file_name package_list; then
-    echo $file_name>>projects
-    fi
-done<circle_files
-
-##
 echo "Check which packages has been modified"
 ##
 git --no-pager diff --no-commit-id --name-only -r `git log -n 2 --oneline --pretty=format:"%h" | tail -n1` | grep 'packages' | cut -d/ -f2 | sort -u >  packages_files
@@ -44,15 +30,16 @@ echo "Run builds"
 ##
 while read project; do
     if [ -z $project ] ; then
-    continue
+        continue
     fi
     printf "== %s == \n" $project
-    if [ -f .circleci/$project.yml ]; then
-    printf "Triggerring build for %s \n" $project 
-    curl -s -u ${CIRCLE_TOKEN}: --request POST --form "config=@.circleci/$project.yml" https://circleci.com/api/v1.1/project/github/$O/$R/tree/$CIRCLE_BRANCH
-    # TODO can be improved with https://circleci.com/docs/api/v1-reference/#new-project-build when build_parameters are available (not yet as of 21/11/2018)
+    configpath="packages/$project/.circleci/config.yml"
+    if [ -f $configpath ]; then
+        printf "Triggerring build for %s (%s) \n" $project $configpath
+        curl -s -u ${CIRCLE_TOKEN}: --request POST --form "config=@$configpath" https://circleci.com/api/v1.1/project/github/$O/$R/tree/$CIRCLE_BRANCH
+        # TODO can be improved with https://circleci.com/docs/api/v1-reference/#new-project-build when build_parameters are available (not yet as of 21/11/2018)
     else
-    printf "No build for %s \n" $project 
+        printf "No build for %s (%s not found) \n" $project $configpath
     fi
     printf "\n"
 done <projects
