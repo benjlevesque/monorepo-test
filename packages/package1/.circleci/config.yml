@@ -9,3 +9,4 @@ jobs:
       - checkout:
           path: ~/repo
       - run: node index.js
+      - run: node XXX.js
